@@ -879,16 +879,13 @@ class ExpressiveDate extends DateTime {
 				return $this->format('S');
 				break;
 			case 'LeapYear':
-				return $this->format('L');
+				return (bool) $this->format('L');
 				break;
 			case 'AmOrPm':
-				return $this->format('a');
-				break;
-			case 'TimezoneIdenfifier':
-				return $this->format('e');
+				return $this->format('A');
 				break;
 			case 'DaylightSavings':
-				return $this->format('I');
+				return (bool) $this->format('I');
 				break;
 			case 'GmtDifference':
 				return $this->format('O');
