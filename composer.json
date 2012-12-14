@@ -1,6 +1,6 @@
 {
     "name": "jasonlewis/expressive-date",
-    "description": "A fluent extension to PHPs DateTime library.",
+    "description": "A fluent extension to PHPs DateTime class.",
     "keywords": ["date", "time"],
     "license": "BSD-2-Clause",
     "authors": [
