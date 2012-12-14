@@ -782,6 +782,56 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
+	 * Get a date string in the format of 2012-12-04.
+	 * 
+	 * @return string
+	 */
+	public function getDateString()
+	{
+		return $this->format('Y-m-d');
+	}
+
+	/**
+	 * Get a date and time string in the format of 2012-12-04 23:43:27.
+	 * 
+	 * @return string
+	 */
+	public function getDateTimeString()
+	{
+		return $this->format('Y-m-d H:i:s');
+	}
+
+	/**
+	 * Get a date string in the format of Jan 31, 1991.
+	 * 
+	 * @return string
+	 */
+	public function getShortDateString()
+	{
+		return $this->format('M j, Y');
+	}
+
+	/**
+	 * Get a date string in the format of January 31st, 1991 at 7:45am.
+	 * 
+	 * @return string
+	 */
+	public function getLongDateString()
+	{
+		return $this->format('F jS, Y \a\\t g:ia');
+	}
+
+	/**
+	 * Get a date string in the format of 07:42:32.
+	 * 
+	 * @return string
+	 */
+	public function getTimeString()
+	{
+		return $this->format('H:i:s');
+	}
+
+	/**
 	 * Get a date attribute.
 	 *
 	 * @param  string  $attribute

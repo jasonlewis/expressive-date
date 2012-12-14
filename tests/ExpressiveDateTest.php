@@ -354,6 +354,41 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testGetDateString()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('1991-01-31', $date->getDateString());
+	}
+
+
+	public function testGetDateTimeString()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('1991-01-31 00:00:00', $date->getDateTimeString());
+	}
+
+
+	public function testGetShortDateString()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('Jan 31, 1991', $date->getShortDateString());
+	}
+
+
+	public function testGetLongDateString()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('January 31st, 1991 at 12:00am', $date->getLongDateString());
+	}
+
+
+	public function testGetTimeString()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('00:00:00', $date->getTimeString());
+	}
+
+
 	public function testGettingInvalidDateAttributeThrowsException()
 	{
 		$this->setExpectedException('InvalidArgumentException');
