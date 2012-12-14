@@ -466,6 +466,28 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testGetDefaultDateFormat()
+	{
+		$date = new ExpressiveDate('31 January 1991 16:00:00');
+		$this->assertEquals('31st January, 1991 at 4:00pm', $date->getDefaultDate());
+	}
+
+
+	public function testSetDefaultDateFormat()
+	{
+		$date = new ExpressiveDate('31 January 1991 16:00:00');
+		$date->setDefaultDateFormat('j F');
+		$this->assertEquals('31 January', $date->getDefaultDate());
+	}
+
+
+	public function testDefaultDateUsedOnObjectEcho()
+	{
+		$date = new ExpressiveDate('31 January 1991 16:00:00');
+		$this->assertEquals('31st January, 1991 at 4:00pm', $date);
+	}
+
+
 	public function testGettingInvalidDateAttributeThrowsException()
 	{
 		$this->setExpectedException('InvalidArgumentException');

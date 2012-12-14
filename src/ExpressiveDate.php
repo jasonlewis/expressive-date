@@ -3,6 +3,13 @@
 class ExpressiveDate extends DateTime {
 
 	/**
+	 * Default date format used when casting object to string.
+	 * 
+	 * @var string
+	 */
+	protected $defaultDateFormat = 'jS F, Y \a\\t g:ia';
+
+	/**
 	 * Create a new ExpressiveDate instance.
 	 * 
 	 * @param  string  $time
@@ -836,6 +843,29 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
+	 * Get a date string in the default format.
+	 * 
+	 * @return string
+	 */
+	public function getDefaultDate()
+	{
+		return $this->format($this->defaultDateFormat);
+	}
+
+	/**
+	 * Set the default date format.
+	 * 
+	 * @param  string  $format
+	 * @return ExpressiveDate
+	 */
+	public function setDefaultDateFormat($format)
+	{
+		$this->defaultDateFormat = $format;
+
+		return $this;
+	}
+
+	/**
 	 * Get a date attribute.
 	 *
 	 * @param  string  $attribute
@@ -964,6 +994,16 @@ class ExpressiveDate extends DateTime {
 
 		// If not setting an attribute then we'll default to getting an attribute.
 		return $this->getDateAttribute($attribute);
+	}
+
+	/**
+	 * Return the default date format when casting to string.
+	 * 
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->getDefaultDate();
 	}
 
 }
