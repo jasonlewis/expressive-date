@@ -294,9 +294,9 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	public function testGetDateDifferenceInMonths()
 	{
 		$past = new ExpressiveDate('January 2012');
-		$future = new ExpressiveDate('December 2012');
-		$this->assertEquals(-10, $future->getDifferenceInMonths($past));
-		$this->assertEquals(10, $past->getDifferenceInMonths($future));
+		$future = new ExpressiveDate('December 2013');
+		$this->assertEquals(-22, $future->getDifferenceInMonths($past));
+		$this->assertEquals(22, $past->getDifferenceInMonths($future));
 	}
 
 

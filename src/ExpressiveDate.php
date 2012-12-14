@@ -662,7 +662,11 @@ class ExpressiveDate extends DateTime {
 			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
-		return $this->diff($compare)->format('%r%m');
+		$difference = $this->diff($compare);
+
+		list($years, $months) = explode(':', $difference->format('%y:%m'));
+
+		return (($years * 12) + $months) * $difference->format('%r1');
 	}
 
 	/**
