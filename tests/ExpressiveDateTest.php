@@ -389,6 +389,83 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testGetDayOfWeek()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('Thursday', $date->getDayOfWeek());
+	}
+
+
+	public function testGetDayOfWeekAsNumeric()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals(4, $date->getDayOfWeekAsNumeric());
+	}
+
+
+	public function testGetDaysInMonth()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals(31, $date->getDaysInMonth());
+	}
+
+
+	public function testGetDayOfYear()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals(30, $date->getDayOfYear());
+	}
+
+
+	public function testGetDaySuffix()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('st', $date->getDaySuffix());
+	}
+
+
+	public function testIsLeapYear()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertFalse($date->isLeapYear());
+	}
+
+
+	public function testIsAmOrPm()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('AM', $date->isAmOrPm());
+	}
+
+
+	public function testIsDaylightSavings()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertTrue($date->isDaylightSavings());
+	}
+
+
+	public function testGetGmtDifference()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('+1100', $date->getGmtDifference());
+	}
+
+
+	public function testSecondsSinceEpoch()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals(strtotime('31 January 1991') - strtotime('January 1 1970 00:00:00 GMT'), $date->getSecondsSinceEpoch());
+	}
+
+
+	public function testGetTimezoneName()
+	{
+		$date = new ExpressiveDate('31 January 1991');
+		$this->assertEquals('Australia/Melbourne', $date->getTimezoneName());
+	}
+
+
 	public function testGettingInvalidDateAttributeThrowsException()
 	{
 		$this->setExpectedException('InvalidArgumentException');
