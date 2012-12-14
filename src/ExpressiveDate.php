@@ -742,7 +742,7 @@ class ExpressiveDate extends DateTime {
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
-	public function getRelativeDate($compare = null)
+	public function getRelativeString($compare = null)
 	{
 		if ( ! $compare)
 		{

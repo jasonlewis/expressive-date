@@ -336,21 +336,21 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testGetDateAsRelativeDate()
+	public function testGetDateAsRelativeString()
 	{
 		$date = new ExpressiveDate;
 		$date->minusOneDay();
-		$this->assertEquals('1 day ago', $date->getRelativeDate());
+		$this->assertEquals('1 day ago', $date->getRelativeString());
 		$date->minusDays(2);
-		$this->assertEquals('3 days ago', $date->getRelativeDate());
+		$this->assertEquals('3 days ago', $date->getRelativeString());
 		$date->addDays(4);
-		$this->assertEquals('1 day from now', $date->getRelativeDate());
+		$this->assertEquals('1 day from now', $date->getRelativeString());
 		$date->addMonths(4);
-		$this->assertEquals('4 months from now', $date->getRelativeDate());
+		$this->assertEquals('4 months from now', $date->getRelativeString());
 		$date->minusMonths(5)->minusOneYear();
-		$this->assertEquals('1 year ago', $date->getRelativeDate());
+		$this->assertEquals('1 year ago', $date->getRelativeString());
 		$date->minusYears(10);
-		$this->assertEquals('11 years ago', $date->getRelativeDate());
+		$this->assertEquals('11 years ago', $date->getRelativeString());
 	}
 
 
