@@ -1,8 +1,24 @@
 # Expressive Date
 
-Expressive Date provides a fluent syntax on top of PHPs `DateTime` library. Take away the pain of dealing with dates and times in PHP.
+A fluent extension to PHPs DateTime class.
 
 [![Build Status](https://travis-ci.org/jasonlewis/expressive-date.png?branch=master)](https://travis-ci.org/jasonlewis/expressive-date)
+
+## Example
+
+~~~~
+<?php
+
+$date = new ExpressiveDate;
+
+$date->minusOneDay();
+
+echo $date->getRelativeDate(); // 1 day ago
+
+$date->addOneWeek();
+
+echo $date->getShortDate(); // Jan 31, 2012
+~~~~
 
 ## Documentation
 
