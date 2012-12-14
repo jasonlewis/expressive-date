@@ -742,7 +742,7 @@ class ExpressiveDate extends DateTime {
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
-	public function getRelativeString($compare = null)
+	public function getRelativeDate($compare = null)
 	{
 		if ( ! $compare)
 		{
@@ -790,7 +790,7 @@ class ExpressiveDate extends DateTime {
 	 * 
 	 * @return string
 	 */
-	public function getDateString()
+	public function getDate()
 	{
 		return $this->format('Y-m-d');
 	}
@@ -800,7 +800,7 @@ class ExpressiveDate extends DateTime {
 	 * 
 	 * @return string
 	 */
-	public function getDateTimeString()
+	public function getDateTime()
 	{
 		return $this->format('Y-m-d H:i:s');
 	}
@@ -810,7 +810,7 @@ class ExpressiveDate extends DateTime {
 	 * 
 	 * @return string
 	 */
-	public function getShortDateString()
+	public function getShortDate()
 	{
 		return $this->format('M j, Y');
 	}
@@ -820,7 +820,7 @@ class ExpressiveDate extends DateTime {
 	 * 
 	 * @return string
 	 */
-	public function getLongDateString()
+	public function getLongDate()
 	{
 		return $this->format('F jS, Y \a\\t g:ia');
 	}
@@ -830,7 +830,7 @@ class ExpressiveDate extends DateTime {
 	 * 
 	 * @return string
 	 */
-	public function getTimeString()
+	public function getTime()
 	{
 		return $this->format('H:i:s');
 	}

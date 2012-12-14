@@ -336,56 +336,56 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testGetDateAsRelativeString()
+	public function testGetDateAsRelativeDate()
 	{
 		$date = new ExpressiveDate;
 		$date->minusOneDay();
-		$this->assertEquals('1 day ago', $date->getRelativeString());
+		$this->assertEquals('1 day ago', $date->getRelativeDate());
 		$date->minusDays(2);
-		$this->assertEquals('3 days ago', $date->getRelativeString());
+		$this->assertEquals('3 days ago', $date->getRelativeDate());
 		$date->addDays(4);
-		$this->assertEquals('1 day from now', $date->getRelativeString());
+		$this->assertEquals('1 day from now', $date->getRelativeDate());
 		$date->addMonths(4);
-		$this->assertEquals('4 months from now', $date->getRelativeString());
+		$this->assertEquals('4 months from now', $date->getRelativeDate());
 		$date->minusMonths(5)->minusOneYear();
-		$this->assertEquals('1 year ago', $date->getRelativeString());
+		$this->assertEquals('1 year ago', $date->getRelativeDate());
 		$date->minusYears(10);
-		$this->assertEquals('11 years ago', $date->getRelativeString());
+		$this->assertEquals('11 years ago', $date->getRelativeDate());
 	}
 
 
 	public function testGetDateString()
 	{
 		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('1991-01-31', $date->getDateString());
+		$this->assertEquals('1991-01-31', $date->getDate());
 	}
 
 
 	public function testGetDateTimeString()
 	{
 		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('1991-01-31 00:00:00', $date->getDateTimeString());
+		$this->assertEquals('1991-01-31 00:00:00', $date->getDateTime());
 	}
 
 
 	public function testGetShortDateString()
 	{
 		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('Jan 31, 1991', $date->getShortDateString());
+		$this->assertEquals('Jan 31, 1991', $date->getShortDate());
 	}
 
 
 	public function testGetLongDateString()
 	{
 		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('January 31st, 1991 at 12:00am', $date->getLongDateString());
+		$this->assertEquals('January 31st, 1991 at 12:00am', $date->getLongDate());
 	}
 
 
 	public function testGetTimeString()
 	{
 		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('00:00:00', $date->getTimeString());
+		$this->assertEquals('00:00:00', $date->getTime());
 	}
 
 
