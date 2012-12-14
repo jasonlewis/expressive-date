@@ -643,7 +643,7 @@ class ExpressiveDate extends DateTime {
 	{
 		if ( ! $compare)
 		{
-			$compare = new Date(null, $this->getTimezone());
+			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
 		return $this->diff($compare)->format('%r%y');
@@ -659,7 +659,7 @@ class ExpressiveDate extends DateTime {
 	{
 		if ( ! $compare)
 		{
-			$compare = new Date(null, $this->getTimezone());
+			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
 		return $this->diff($compare)->format('%r%m');
@@ -675,7 +675,7 @@ class ExpressiveDate extends DateTime {
 	{
 		if ( ! $compare)
 		{
-			$compare = new Date(null, $this->getTimezone());
+			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
 		return $this->diff($compare)->format('%r%a');
@@ -713,7 +713,7 @@ class ExpressiveDate extends DateTime {
 	{
 		if ( ! $compare)
 		{
-			$compare = new Date(null, $this->getTimezone());
+			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
 		$difference = $this->diff($compare);
