@@ -24,6 +24,13 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testDateIsCreatedFromStaticMethod()
+	{
+		$date = ExpressiveDate::make();
+		$this->assertEquals(time(), $date->getTimestamp());
+	}
+
+
 	public function testDateIsCreatedWithDifferentTimezone()
 	{
 		$date = new ExpressiveDate(null, 'Europe/Paris');
