@@ -6,7 +6,7 @@ A fluent extension to PHPs DateTime class.
 
 ## Example
 
-~~~~
+```php
 <?php
 
 $date = new ExpressiveDate;
@@ -18,7 +18,7 @@ echo $date->getRelativeDate(); // 1 day ago
 $date->addOneWeek();
 
 echo $date->getShortDate(); // Jan 31, 2012
-~~~~
+```
 
 ## Documentation
 
