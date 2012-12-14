@@ -3,7 +3,7 @@
 class ExpressiveDate extends DateTime {
 
 	/**
-	 * Create a new date instance.
+	 * Create a new ExpressiveDate instance.
 	 * 
 	 * @param  string  $time
 	 * @param  string|DateTimeZone  $timezone
@@ -14,6 +14,18 @@ class ExpressiveDate extends DateTime {
 		$timezone = $this->parseSuppliedTimezone($timezone);
 
 		parent::__construct($time, $timezone);
+	}
+
+	/**
+	 * Make and return new ExpressiveDate instance.
+	 * 
+	 * @param  string  $time
+	 * @param  string|DateTimeZone  $timezone
+	 * @return ExpressiveDate
+	 */
+	public static function make($time = null, $timezone = null)
+	{
+		return new static($time, $timezone);
 	}
 
 	/**
