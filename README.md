@@ -2,6 +2,8 @@
 
 Expressive Date provides a fluent syntax on top of PHPs `DateTime` library. Take away the pain of dealing with dates and times in PHP.
 
+[![Build Status](https://travis-ci.org/jasonlewis/expressive-date.png?branch=master)](https://travis-ci.org/jasonlewis/expressive-date)
+
 ## Documentation
 
 Refer to the following guide on how to use Expressive Date.
