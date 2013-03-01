@@ -1,17 +1,51 @@
 <?php
 
+/**
+ *  @method int getDay() day of the month
+ *  @method int getMonth() month
+ *  @method int getYear() year
+ *  @method int getHour() hours
+ *  @method int getMinute() minutes
+ *  @method int getSecond() seconds
+ *  @method string getDayOfWeek() day of the week (Monday, Tuesday, etc)
+ *  @method int getDayOfWeekAsNumeric() numeric day of week (0..6). First day of week (sunday or monday) can defined by setWeekStartDay() method
+ *  @method int getDaysInMonth() number days in the month
+ *  @method int getDayOfYear() number days in the year
+ *  @method int getLeapYear()
+ *  @method string getAmOrPm()
+ *  @method int getDaylightSavings()
+ *  @method int getGmtDifference()
+ *  @method int getSecondsSinceEpoch()
+ *  @method string getTimezoneName()
+ *  @method setDay(int $day) set day of the month
+ *  @method setMonth(int $month) set month
+ *  @method setYear(int $year) set year
+ *  @method setHour(int $hour) set hours
+ *  @method setMinute(int $minute) set minutes
+ *  @method setSecond(int $second) set seconds
+ */
 class ExpressiveDate extends DateTime {
 
 	/**
 	 * Default date format used when casting object to string.
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $defaultDateFormat = 'jS F, Y \a\\t g:ia';
 
 	/**
+	 * First day of the week
+	 *
+	 * 0 - Sunday
+	 * 1 - Monday
+	 *
+	 * @var int
+	 */
+	protected $weekStartDay = 0;
+
+	/**
 	 * Create a new ExpressiveDate instance.
-	 * 
+	 *
 	 * @param  string  $time
 	 * @param  string|DateTimeZone  $timezone
 	 * @return void
@@ -25,7 +59,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Make and return new ExpressiveDate instance.
-	 * 
+	 *
 	 * @param  string  $time
 	 * @param  string|DateTimeZone  $timezone
 	 * @return ExpressiveDate
@@ -37,7 +71,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Parse a supplied timezone.
-	 * 
+	 *
 	 * @param  string|DateTimeZone  $timezone
 	 * @return DateTimeZone
 	 */
@@ -62,7 +96,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use the current date and time.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function now()
@@ -74,7 +108,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use today's date and time at midnight.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function today()
@@ -86,7 +120,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use tomorrow's date and time at midnight.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function tomorrow()
@@ -98,7 +132,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use yesterday's date and time at midnight.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function yesterday()
@@ -110,7 +144,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use the start of the day.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function startOfDay()
@@ -122,7 +156,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use the end of the day.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function endOfDay()
@@ -133,8 +167,32 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
+	 * Use the start of the week.
+	 *
+	 * @return ExpressiveDate
+	 */
+	public function startOfWeek()
+	{
+		$this->minusDays($this->getDayOfWeekAsNumeric())->startOfDay();
+
+		return $this;
+	}
+
+	/**
+	 * Use the end of the week.
+	 *
+	 * @return ExpressiveDate
+	 */
+	public function endOfWeek()
+	{
+		$this->addDays(7 - $this->getDayOfWeekAsNumeric())->endOfDay();
+
+		return $this;
+	}
+
+	/**
 	 * Use the start of the month.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function startOfMonth()
@@ -146,7 +204,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Use the end of the month.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function endOfMonth()
@@ -158,7 +216,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one day.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -169,7 +227,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of days.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -180,7 +238,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one day.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneDay()
@@ -190,7 +248,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of days.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -201,7 +259,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of days.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -217,7 +275,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one month.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -228,7 +286,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of months.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -239,7 +297,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one month.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneMonth()
@@ -249,7 +307,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of months.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -260,7 +318,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of months.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -276,7 +334,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one year.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -287,7 +345,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of years.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -298,7 +356,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one year.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneYear()
@@ -308,7 +366,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of years.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -319,7 +377,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of Years.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -335,7 +393,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one hour.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -346,7 +404,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of hours.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -357,7 +415,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one hour.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneHour()
@@ -367,7 +425,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of hours.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -378,7 +436,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of hours.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -394,7 +452,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one minute.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -405,7 +463,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of minutes.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -416,7 +474,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one minute.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneMinute()
@@ -426,7 +484,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of minutes.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -437,7 +495,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of minutes.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -453,7 +511,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one second.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -464,7 +522,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of seconds.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -475,7 +533,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one second.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneSecond()
@@ -485,7 +543,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of seconds.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -496,7 +554,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of seconds.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -512,7 +570,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add one week.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -523,7 +581,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Add a given amount of weeks.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -534,7 +592,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus one week.
-	 * 
+	 *
 	 * @return ExpressiveDate
 	 */
 	public function minusOneWeek()
@@ -544,7 +602,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Minus a given amount of weeks.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @return ExpressiveDate
 	 */
@@ -555,7 +613,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify by an amount of weeks.
-	 * 
+	 *
 	 * @param  int  $amount
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -571,7 +629,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Modify from a DateInterval object.
-	 * 
+	 *
 	 * @param  DateInterval  $interval
 	 * @param  bool  $invert
 	 * @return ExpressiveDate
@@ -592,7 +650,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Set the timezone.
-	 * 
+	 *
 	 * @param  string|DateTimeZone  $timezone
 	 * @return ExpressiveDate
 	 */
@@ -607,7 +665,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Sets the timestamp from a human readable string.
-	 * 
+	 *
 	 * @param  string  $string
 	 * @return ExpressiveDate
 	 */
@@ -620,7 +678,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if day is a weekday.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isWeekday()
@@ -632,7 +690,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if day is a weekend.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isWeekend()
@@ -642,7 +700,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get the difference in years.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -658,7 +716,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get the difference in months.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -678,7 +736,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get the difference in days.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -694,7 +752,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get the difference in hours.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -705,7 +763,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get the difference in minutes.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -716,7 +774,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get the difference in seconds.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -745,7 +803,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a relative date string, e.g., 3 days ago.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $compare
 	 * @return string
 	 */
@@ -794,7 +852,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a date string in the format of 2012-12-04.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getDate()
@@ -804,7 +862,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a date and time string in the format of 2012-12-04 23:43:27.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getDateTime()
@@ -814,7 +872,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a date string in the format of Jan 31, 1991.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getShortDate()
@@ -824,7 +882,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a date string in the format of January 31st, 1991 at 7:45am.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getLongDate()
@@ -834,7 +892,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a date string in the format of 07:42:32.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTime()
@@ -844,7 +902,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Get a date string in the default format.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getDefaultDate()
@@ -854,7 +912,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Set the default date format.
-	 * 
+	 *
 	 * @param  string  $format
 	 * @return ExpressiveDate
 	 */
@@ -863,6 +921,34 @@ class ExpressiveDate extends DateTime {
 		$this->defaultDateFormat = $format;
 
 		return $this;
+	}
+
+	/**
+	 * Set week start day
+	 *
+	 * 0 - Sunday
+	 * 1 - Monday
+	 *
+	 * @param int $weekStartDay
+	 */
+	public function setWeekStartDay($weekStartDay)
+	{
+		$this->weekStartDay = $weekStartDay;
+
+		return $this;
+	}
+
+	/**
+	 * Get week start day
+	 *
+	 * 0 - Sunday
+	 * 1 - Monday
+	 *
+	 * @return int
+	 */
+	public function getWeekStartDay()
+	{
+		return $this->weekStartDay;
 	}
 
 	/**
@@ -897,7 +983,7 @@ class ExpressiveDate extends DateTime {
 				return $this->format('l');
 				break;
 			case 'DayOfWeekAsNumeric':
-				return $this->format('w');
+				return (7 + $this->format('w') - $this->getWeekStartDay()) % 7;
 				break;
 			case 'DaysInMonth':
 				return $this->format('t');
@@ -966,7 +1052,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Dynamically handle calls for date attributes and testers.
-	 * 
+	 *
 	 * @param  string  $method
 	 * @param  array  $parameters
 	 * @return mixed
@@ -998,12 +1084,22 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Return the default date format when casting to string.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function __toString()
 	{
 		return $this->getDefaultDate();
+	}
+
+	/**
+	 * Return copy of expressive date object
+	 *
+	 * @return ExpressiveDate
+	 */
+	public function copy()
+	{
+		return clone $this;
 	}
 
 }
