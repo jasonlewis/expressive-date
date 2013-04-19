@@ -111,7 +111,6 @@ class DateTest extends PHPUnit_Framework_TestCase {
 
 	public function testDayOfWeekAsNumber()
 	{
-		// 17 March 2013 - Sunday, 18 March 2013 - Monday, 24 March 2013 - Sunday
 		$date = new ExpressiveDate('17 March 2013');
 		$this->assertEquals(0, $date->setWeekStartDay(0)->getDayOfWeekAsNumeric());
 		$this->assertEquals(6, $date->setWeekStartDay(1)->getDayOfWeekAsNumeric());
@@ -123,20 +122,25 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(5, $date->setDay(23)->setWeekStartDay(1)->getDayOfWeekAsNumeric());
 	}
 
-	public function testStartOWeek()
-	{
-		// 17 March 2013 - Sunday, 18 March 2013 - Monday, 24 March 2013 - Sunday
 
-		// American (Sunday is first day of the week)
+	public function testSetDayOfWeekFromString()
+	{
 		$date = new ExpressiveDate('17 March 2013');
-		$date->setWeekStartDay(0); // sunday is first day of the week
+		$this->assertEquals(0, $date->setWeekStartDay('sunday')->getDayOfWeekAsNumeric());
+		$this->assertEquals(6, $date->setWeekStartDay('monday')->getDayOfWeekAsNumeric());
+	}
+
+
+	public function testStartOfWeek()
+	{
+		$date = new ExpressiveDate('17 March 2013');
+		$date->setWeekStartDay(0);
 
 		$this->assertEquals('2013/03/17', $date->copy()->startOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/17', $date->copy()->setDay(19)->startOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/17', $date->copy()->setDay(23)->startOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/24', $date->copy()->setDay(24)->startOfWeek()->format('Y/m/d'));
 
-		// European/ISO 8601 (Monday is first day of the week)
 		$date = new ExpressiveDate('18 March 2013');
 		$date->setWeekStartDay(1);
 
@@ -151,18 +155,14 @@ class DateTest extends PHPUnit_Framework_TestCase {
 
 	public function testEndOfWeek()
 	{
-		// 17 March 2013 - Sunday, 18 March 2013 - Monday, 24 March 2013 - Sunday
-
-		// American (Sunday is first day of the week)
 		$date = new ExpressiveDate('17 March 2013');
-		$date->setWeekStartDay(0); // sunday is first day of the week
+		$date->setWeekStartDay(0);
 
 		$this->assertEquals('2013/03/24', $date->copy()->endOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/24', $date->copy()->setDay(19)->endOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/24', $date->copy()->setDay(23)->endOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/31', $date->copy()->setDay(24)->endOfWeek()->format('Y/m/d'));
 
-		// European/ISO 8601 (Monday is first day of the week)
 		$date = new ExpressiveDate('18 March 2013');
 		$date->setWeekStartDay(1);
 
@@ -569,14 +569,13 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$date->setInvalidDateAttribute('foo');
 	}
 
+
 	public function testCopy()
 	{
 		$date = new ExpressiveDate('19 March 2013');
-		$dateCopy = $date->copy();
-		$this->assertEquals('2013/03/19', $dateCopy->format('Y/m/d'));
 
-		$date->addDays(10);
-		$this->assertEquals('2013/03/19', $dateCopy->format('Y/m/d'));
-		$this->assertEquals('2013/03/29', $date->format('Y/m/d'));
+		$this->assertEquals($date, $date->copy());
 	}
+
+	
 }

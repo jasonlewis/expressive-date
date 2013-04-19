@@ -1,29 +1,31 @@
 <?php
 
 /**
- *  @method int getDay() day of the month
- *  @method int getMonth() month
- *  @method int getYear() year
- *  @method int getHour() hours
- *  @method int getMinute() minutes
- *  @method int getSecond() seconds
- *  @method string getDayOfWeek() day of the week (Monday, Tuesday, etc)
- *  @method int getDayOfWeekAsNumeric() numeric day of week (0..6). First day of week (sunday or monday) can defined by setWeekStartDay() method
- *  @method int getDaysInMonth() number days in the month
- *  @method int getDayOfYear() number days in the year
- *  @method int getLeapYear()
- *  @method string getAmOrPm()
- *  @method int getDaylightSavings()
- *  @method int getGmtDifference()
- *  @method int getSecondsSinceEpoch()
- *  @method string getTimezoneName()
- *  @method setDay(int $day) set day of the month
- *  @method setMonth(int $month) set month
- *  @method setYear(int $year) set year
- *  @method setHour(int $hour) set hours
- *  @method setMinute(int $minute) set minutes
- *  @method setSecond(int $second) set seconds
+ *  @method int getDay() Get day of month.
+ *  @method int getMonth() Get the month.
+ *  @method int getYear() Get the year.
+ *  @method int getHour() Get the hour.
+ *  @method int getMinute() Get the minutes.
+ *  @method int getSecond() Get the seconds.
+ *  @method string getDayOfWeek() Get the day of the week, e.g., Monday.
+ *  @method int getDayOfWeekAsNumeric() Get the numeric day of week.
+ *  @method int getDaysInMonth() Get the number of days in the month.
+ *  @method int getDayOfYear() Get the day of the year.
+ *  @method string getDaySuffix() Get the suffix of the day, e.g., st.
+ *  @method bool isLeapYear() Determines if is leap year.
+ *  @method string isAmOrPm() Determines if time is AM or PM.
+ *  @method bool isDaylightSavings() Determines if observing daylight savings.
+ *  @method int getGmtDifference() Get difference in GMT.
+ *  @method int getSecondsSinceEpoch() Get the number of seconds since epoch.
+ *  @method string getTimezoneName() Get the timezone name.
+ *  @method setDay(int $day) Set the day of month.
+ *  @method setMonth(int $month) Set the month.
+ *  @method setYear(int $year) Set the year.
+ *  @method setHour(int $hour) Set the hour.
+ *  @method setMinute(int $minute) Set the minutes.
+ *  @method setSecond(int $second) Set the seconds.
  */
+
 class ExpressiveDate extends DateTime {
 
 	/**
@@ -34,10 +36,7 @@ class ExpressiveDate extends DateTime {
 	protected $defaultDateFormat = 'jS F, Y \a\\t g:ia';
 
 	/**
-	 * First day of the week
-	 *
-	 * 0 - Sunday
-	 * 1 - Monday
+	 * Starting day of the week, where 0 is Sunday and 1 is Monday.
 	 *
 	 * @var int
 	 */
@@ -924,25 +923,27 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
-	 * Set week start day
+	 * Set the starting day of the week, where 0 is Sunday and 1 is Monday.
 	 *
-	 * 0 - Sunday
-	 * 1 - Monday
-	 *
-	 * @param int $weekStartDay
+	 * @param int|string $weekStartDay
+	 * @return void
 	 */
 	public function setWeekStartDay($weekStartDay)
 	{
-		$this->weekStartDay = $weekStartDay;
+		if (is_numeric($weekStartDay))
+		{
+			$this->weekStartDay = $weekStartDay;
+		}
+		else
+		{
+			$this->weekStartDay = array_search(strtolower($weekStartDay), array('sunday', 'monday'));
+		}
 
 		return $this;
 	}
 
 	/**
-	 * Get week start day
-	 *
-	 * 0 - Sunday
-	 * 1 - Monday
+	 * Get the starting day of the week, where 0 is Sunday and 1 is Monday
 	 *
 	 * @return int
 	 */
@@ -994,15 +995,6 @@ class ExpressiveDate extends DateTime {
 			case 'DaySuffix':
 				return $this->format('S');
 				break;
-			case 'LeapYear':
-				return (bool) $this->format('L');
-				break;
-			case 'AmOrPm':
-				return $this->format('A');
-				break;
-			case 'DaylightSavings':
-				return (bool) $this->format('I');
-				break;
 			case 'GmtDifference':
 				return $this->format('O');
 				break;
@@ -1011,6 +1003,30 @@ class ExpressiveDate extends DateTime {
 				break;
 			case 'TimezoneName':
 				return $this->getTimezone()->getName();
+				break;
+		}
+
+		throw new InvalidArgumentException('The date attribute ['.$attribute.'] could not be found.');
+	}
+
+	/**
+	 * Syntactical sugar for determining if date object "is" a condition.
+	 * 
+	 * @param  string  $attribute
+	 * @return mixed
+	 */
+	protected function isDateAttribute($attribute)
+	{
+		switch ($attribute)
+		{
+			case 'LeapYear':
+				return (bool) $this->format('L');
+				break;
+			case 'AmOrPm':
+				return $this->format('A');
+				break;
+			case 'DaylightSavings':
+				return (bool) $this->format('I');
 				break;
 		}
 
@@ -1066,6 +1082,8 @@ class ExpressiveDate extends DateTime {
 		elseif (substr($method, 0, 2) == 'is')
 		{
 			$attribute = substr($method, 2);
+
+			return $this->isDateAttribute($attribute);
 		}
 
 		if ( ! isset($attribute))
