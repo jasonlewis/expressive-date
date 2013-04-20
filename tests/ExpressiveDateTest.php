@@ -1,26 +1,28 @@
 <?php
 
-use Mockery as m;
-
 class DateTest extends PHPUnit_Framework_TestCase {
+
+
+	protected $date;
 
 
 	public function tearDown()
 	{
-		m::close();
+		$this->date = null;
 	}
 
 
 	public function setUp()
 	{
 		date_default_timezone_set('Australia/Melbourne');
+
+		$this->date = new ExpressiveDate;
 	}
 
 
 	public function testDateIsCreatedFromNow()
 	{
-		$date = new ExpressiveDate;
-		$this->assertEquals(time(), $date->getTimestamp());
+		$this->assertEquals(time(), $this->date->getTimestamp());
 	}
 
 
@@ -66,7 +68,9 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$date = new ExpressiveDate(null, 'Europe/Paris');
 		date_default_timezone_set('Europe/Paris');
 		$this->assertEquals(time(), $date->getTimestamp());
+
 		date_default_timezone_set('Australia/Melbourne');
+
 		$date = new ExpressiveDate(null, new DateTimeZone('Europe/Paris'));
 		date_default_timezone_set('Europe/Paris');
 		$this->assertEquals(time(), $date->getTimestamp());
@@ -77,65 +81,57 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	{
 		$date = new ExpressiveDate('31 January 1991');
 		$this->assertEquals('31/01/1991', $date->format('d/m/Y'));
+
 		$date = new ExpressiveDate('+1 day');
 		$this->assertEquals(time() + 86400, $date->getTimestamp());
+
 		$date = new ExpressiveDate('-1 day');
 		$this->assertEquals(time() - 86400, $date->getTimestamp());
 	}
 
 
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
 	public function testCannotCreateDateWithInvalidTimezone()
 	{
-		$this->setExpectedException('InvalidArgumentException');
 		$date = new ExpressiveDate(null, 'Australia/JasonsPlace');
 	}
 
 
 	public function testUseTomorrowsDateAndTime()
 	{
-		$date = new ExpressiveDate;
-		$date->tomorrow();
-		$this->assertEquals(strtotime('tomorrow'), $date->getTimestamp());
+		$this->assertEquals(strtotime('tomorrow'), $this->date->tomorrow()->getTimestamp());
 	}
 
 
 	public function testUseYesterdaysDateAndTime()
 	{
-		$date = new ExpressiveDate;
-		$date->yesterday();
-		$this->assertEquals(strtotime('yesterday'), $date->getTimestamp());
+		$this->assertEquals(strtotime('yesterday'), $this->date->yesterday()->getTimestamp());
 	}
 
 
 	public function testStartOfDay()
 	{
-		$date = new ExpressiveDate;
-		$date->startOfDay();
-		$this->assertEquals(strtotime('today'), $date->getTimestamp());
+		$this->assertEquals(strtotime('today'), $this->date->startOfDay()->getTimestamp());
 	}
 
 
 	public function testEndOfDay()
 	{
-		$date = new ExpressiveDate;
-		$date->endOfDay();
-		$this->assertEquals(strtotime('tomorrow -1 second'), $date->getTimestamp());
+		$this->assertEquals(strtotime('tomorrow -1 second'), $this->date->endOfDay()->getTimestamp());
 	}
 
 
 	public function testStartOfMonth()
 	{
-		$date = new ExpressiveDate('January');
-		$date->startOfMonth();
-		$this->assertEquals(strtotime('January 1'), $date->getTimestamp());
+		$this->assertEquals(strtotime('January 1'), $this->date->setDay(31)->setMonth(1)->startOfMonth()->getTimestamp());
 	}
 
 
 	public function testEndOfMonth()
 	{
-		$date = new ExpressiveDate('January');
-		$date->endOfMonth();
-		$this->assertEquals(strtotime('February 1 -1 second'), $date->getTimestamp());
+		$this->assertEquals(strtotime('February 1 -1 second'), $this->date->setMonth(1)->setDay(1)->endOfMonth()->getTimestamp());
 	}
 
 
@@ -204,275 +200,197 @@ class DateTest extends PHPUnit_Framework_TestCase {
 
 	public function testAddingDays()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneDay();
-		$this->assertEquals(strtotime('+1 day'), $date->getTimestamp());
-		$date->addDays(3);
-		$this->assertEquals(strtotime('+4 days'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 day'), $this->date->copy()->addOneDay()->getTimestamp());
+		$this->assertEquals(strtotime('+4 days'), $this->date->copy()->addDays(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingDays()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneDay();
-		$this->assertEquals(strtotime('-1 day'), $date->getTimestamp());
-		$date->minusDays(3);
-		$this->assertEquals(strtotime('-4 days'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 day'), $this->date->copy()->minusOneDay()->getTimestamp());
+		$this->assertEquals(strtotime('-4 days'), $this->date->copy()->minusDays(4)->getTimestamp());
 	}
 
 
 	public function testAddingMonths()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneMonth();
-		$this->assertEquals(strtotime('+1 month'), $date->getTimestamp());
-		$date->addMonths(3);
-		$this->assertEquals(strtotime('+4 months'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 month'), $this->date->copy()->addOneMonth()->getTimestamp());
+		$this->assertEquals(strtotime('+4 months'), $this->date->copy()->addMonths(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingMonths()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneMonth();
-		$this->assertEquals(strtotime('-1 month'), $date->getTimestamp());
-		$date->minusMonths(3);
-		$this->assertEquals(strtotime('-4 months'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 month'), $this->date->copy()->minusOneMonth()->getTimestamp());
+		$this->assertEquals(strtotime('-4 months'), $this->date->copy()->minusMonths(4)->getTimestamp());
 	}
 
 
 	public function testAddingYears()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneYear();
-		$this->assertEquals(strtotime('+1 year'), $date->getTimestamp());
-		$date->addYears(3);
-		$this->assertEquals(strtotime('+4 years'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 year'), $this->date->copy()->addOneYear()->getTimestamp());
+		$this->assertEquals(strtotime('+4 years'), $this->date->copy()->addYears(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingYears()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneYear();
-		$this->assertEquals(strtotime('-1 year'), $date->getTimestamp());
-		$date->minusYears(3);
-		$this->assertEquals(strtotime('-4 years'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 year'), $this->date->copy()->minusOneYear()->getTimestamp());
+		$this->assertEquals(strtotime('-4 years'), $this->date->copy()->minusYears(4)->getTimestamp());
 	}
 
 
 	public function testAddingHours()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneHour();
-		$this->assertEquals(strtotime('+1 hour'), $date->getTimestamp());
-		$date->addHours(3);
-		$this->assertEquals(strtotime('+4 hours'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 hour'), $this->date->copy()->addOneHour()->getTimestamp());
+		$this->assertEquals(strtotime('+4 hours'), $this->date->copy()->addHours(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingHours()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneHour();
-		$this->assertEquals(strtotime('-1 hour'), $date->getTimestamp());
-		$date->minusHours(3);
-		$this->assertEquals(strtotime('-4 hours'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 hour'), $this->date->copy()->minusOneHour()->getTimestamp());
+		$this->assertEquals(strtotime('-4 hours'), $this->date->copy()->minusHours(4)->getTimestamp());
 	}
 
 
 	public function testAddingMinutes()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneMinute();
-		$this->assertEquals(strtotime('+1 minute'), $date->getTimestamp());
-		$date->addMinutes(3);
-		$this->assertEquals(strtotime('+4 minutes'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 minute'), $this->date->copy()->addOneMinute()->getTimestamp());
+		$this->assertEquals(strtotime('+4 minutes'), $this->date->copy()->addMinutes(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingMinutes()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneMinute();
-		$this->assertEquals(strtotime('-1 minute'), $date->getTimestamp());
-		$date->minusMinutes(3);
-		$this->assertEquals(strtotime('-4 minutes'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 minute'), $this->date->copy()->minusOneMinute()->getTimestamp());
+		$this->assertEquals(strtotime('-4 minutes'), $this->date->copy()->minusMinutes(4)->getTimestamp());
 	}
 
 
 	public function testAddingSeconds()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneSecond();
-		$this->assertEquals(strtotime('+1 second'), $date->getTimestamp());
-		$date->addSeconds(3);
-		$this->assertEquals(strtotime('+4 seconds'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 second'), $this->date->copy()->addOneSecond()->getTimestamp());
+		$this->assertEquals(strtotime('+4 seconds'), $this->date->copy()->addSeconds(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingSeconds()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneSecond();
-		$this->assertEquals(strtotime('-1 second'), $date->getTimestamp());
-		$date->minusSeconds(3);
-		$this->assertEquals(strtotime('-4 seconds'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 second'), $this->date->copy()->minusOneSecond()->getTimestamp());
+		$this->assertEquals(strtotime('-4 seconds'), $this->date->copy()->minusSeconds(4)->getTimestamp());
 	}
 
 
 	public function testAddingWeeks()
 	{
-		$date = new ExpressiveDate;
-		$date->addOneWeek();
-		$this->assertEquals(strtotime('+1 week'), $date->getTimestamp());
-		$date->addWeeks(3);
-		$this->assertEquals(strtotime('+4 weeks'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+1 week'), $this->date->copy()->addOneWeek()->getTimestamp());
+		$this->assertEquals(strtotime('+4 weeks'), $this->date->copy()->addWeeks(4)->getTimestamp());
 	}
 
 
 	public function testSubtractingWeeks()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneWeek();
-		$this->assertEquals(strtotime('-1 week'), $date->getTimestamp());
-		$date->minusWeeks(3);
-		$this->assertEquals(strtotime('-4 weeks'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-1 week'), $this->date->copy()->minusOneWeek()->getTimestamp());
+		$this->assertEquals(strtotime('-4 weeks'), $this->date->copy()->minusWeeks(4)->getTimestamp());
 	}
 
 
 	public function testAddingDayFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->addDays(0.5);
-		$this->assertEquals(strtotime('+12 hours'), $date->getTimestamp());
-		$date->addDays(0.25);
-		$this->assertEquals(strtotime('+18 hours'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+12 hours'), $this->date->copy()->addDays(0.5)->getTimestamp());
+		$this->assertEquals(strtotime('+18 hours'), $this->date->copy()->addDays(0.75)->getTimestamp());
 	}
 
 
 	public function testSubtractingDayFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->minusDays(0.5);
-		$this->assertEquals(strtotime('-12 hours'), $date->getTimestamp());
-		$date->minusDays(0.25);
-		$this->assertEquals(strtotime('-18 hours'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-12 hours'), $this->date->copy()->minusDays(0.5)->getTimestamp());
+		$this->assertEquals(strtotime('-18 hours'), $this->date->copy()->minusDays(0.75)->getTimestamp());
 	}
 
 
 	public function testAddingMonthFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->addMonths(0.25);
-		$this->assertEquals(strtotime('+7 days'), $date->getTimestamp());
-		$date->addMonths(1.5);
-		$this->assertEquals(strtotime('+7 weeks'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+7 days'), $this->date->copy()->addMonths(0.25)->getTimestamp());
+		$this->assertEquals(strtotime('+7 weeks'), $this->date->copy()->addMonths(1.75)->getTimestamp());
 	}
 
 
 	public function testSubtractingMonthFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->minusMonths(0.25);
-		$this->assertEquals(strtotime('-7 days'), $date->getTimestamp());
-		$date->minusMonths(1.5);
-		$this->assertEquals(strtotime('-7 weeks'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-7 days'), $this->date->copy()->minusMonths(0.25)->getTimestamp());
+		$this->assertEquals(strtotime('-7 weeks'), $this->date->copy()->minusMonths(1.75)->getTimestamp());
 	}
 
 
 	public function testAddingYearFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->addYears(0.25);
-		$this->assertEquals(strtotime('+3 months'), $date->getTimestamp());
-		$date->addYears(1.75);
-		$this->assertEquals(strtotime('+24 months'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+3 months'), $this->date->copy()->addYears(0.25)->getTimestamp());
+		$this->assertEquals(strtotime('+15 months'), $this->date->copy()->addYears(1.25)->getTimestamp());
 	}
 
 
 	public function testSubtractingYearFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->minusYears(0.25);
-		$this->assertEquals(strtotime('-3 months'), $date->getTimestamp());
-		$date->minusYears(1.75);
-		$this->assertEquals(strtotime('-24 months'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-3 months'), $this->date->copy()->minusYears(0.25)->getTimestamp());
+		$this->assertEquals(strtotime('-15 months'), $this->date->copy()->minusYears(1.25)->getTimestamp());
 	}
 
 
 	public function testAddingHourFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->addHours(0.5);
-		$this->assertEquals(strtotime('+30 minutes'), $date->getTimestamp());
-		$date->addHours(2.25);
-		$this->assertEquals(strtotime('+165 minutes'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+30 minutes'), $this->date->copy()->addHours(0.5)->getTimestamp());
+		$this->assertEquals(strtotime('+75 minutes'), $this->date->copy()->addHours(1.25)->getTimestamp());
 	}
 
 
 	public function testSubtractingHourFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->minusHours(0.5);
-		$this->assertEquals(strtotime('-30 minutes'), $date->getTimestamp());
-		$date->minusHours(1.75);
-		$this->assertEquals(strtotime('-135 minutes'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-30 minutes'), $this->date->copy()->minusHours(0.5)->getTimestamp());
+		$this->assertEquals(strtotime('-105 minutes'), $this->date->copy()->minusHours(1.75)->getTimestamp());
 	}
 
 
 	public function testAddingMinuteFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->addMinutes(0.9);
-		$this->assertEquals(strtotime('+54 seconds'), $date->getTimestamp());
-		$date->addMinutes(0.2);
-		$this->assertEquals(strtotime('+66 seconds'), $date->getTimestamp());
+		$this->assertEquals(strtotime('+54 seconds'), $this->date->copy()->addMinutes(0.9)->getTimestamp());
+		$this->assertEquals(strtotime('+12 seconds'), $this->date->copy()->addMinutes(0.2)->getTimestamp());
 	}
 
 
 	public function testSubtractingMinuteFractions()
 	{
-		$date = new ExpressiveDate;
-		$date->minusMinutes(0.4);
-		$this->assertEquals(strtotime('-24 seconds'), $date->getTimestamp());
-		$date->minusMinutes(0.7);
-		$this->assertEquals(strtotime('-66 seconds'), $date->getTimestamp());
+		$this->assertEquals(strtotime('-24 seconds'), $this->date->copy()->minusMinutes(0.4)->getTimestamp());
+		$this->assertEquals(strtotime('-42 seconds'), $this->date->copy()->minusMinutes(0.7)->getTimestamp());
 	}
 
 
 	public function testSettingTimezoneDuringRuntime()
 	{
-		$date = new ExpressiveDate;
-		$date->setTimezone('Europe/Paris');
-		$this->assertEquals(new DateTimeZone('Europe/Paris'), $date->getTimezone());
+		$this->date->setTimezone('Europe/Paris');
+		$this->assertEquals(new DateTimeZone('Europe/Paris'), $this->date->getTimezone());
 	}
 
 
 	public function testSetTimestampFromString()
 	{
-		$date = new ExpressiveDate;
-		$date->setTimestampFromString('Next week');
-		$this->assertEquals(strtotime('Next week'), $date->getTimestamp());
+		$this->date->setTimestampFromString('Next week');
+		$this->assertEquals(strtotime('Next week'), $this->date->getTimestamp());
 	}
 
 
 	public function testCanCheckIfDateIsWeekday()
 	{
-		$date = new ExpressiveDate('Sunday');
-		$this->assertFalse($date->isWeekday());
-		$date->addOneDay();
-		$this->assertTrue($date->isWeekday());
+		$this->assertFalse($this->date->copy()->setTimestampFromString('Sunday')->isWeekday());
+		$this->assertTrue($this->date->copy()->setTimestampFromString('Monday')->isWeekday());
 	}
 
 
 	public function testCanCheckIfDateIsWeekend()
 	{
-		$date = new ExpressiveDate('Sunday');
-		$this->assertTrue($date->isWeekend());
-		$date->addOneDay();
-		$this->assertFalse($date->isWeekend());
+		$this->assertTrue($this->date->copy()->setTimestampFromString('Sunday')->isWeekend());
+		$this->assertFalse($this->date->copy()->setTimestampFromString('Monday')->isWeekend());
 	}
 
 	public function testGetDateDifferenceInYears()
@@ -531,226 +449,198 @@ class DateTest extends PHPUnit_Framework_TestCase {
 
 	public function testGetDateAsRelativeDate()
 	{
-		$date = new ExpressiveDate;
-		$date->minusOneDay();
-		$this->assertEquals('1 day ago', $date->getRelativeDate());
-		$date->minusDays(2);
-		$this->assertEquals('3 days ago', $date->getRelativeDate());
-		$date->addDays(4);
-		$this->assertEquals('1 day from now', $date->getRelativeDate());
-		$date->addMonths(4);
-		$this->assertEquals('4 months from now', $date->getRelativeDate());
-		$date->minusMonths(5)->minusOneYear();
-		$this->assertEquals('1 year ago', $date->getRelativeDate());
-		$date->minusYears(10);
-		$this->assertEquals('11 years ago', $date->getRelativeDate());
+		$this->date->minusOneDay();
+		$this->assertEquals('1 day ago', $this->date->getRelativeDate());
+		$this->date->minusDays(2);
+		$this->assertEquals('3 days ago', $this->date->getRelativeDate());
+		$this->date->addDays(4);
+		$this->assertEquals('1 day from now', $this->date->getRelativeDate());
+		$this->date->addMonths(4);
+		$this->assertEquals('4 months from now', $this->date->getRelativeDate());
+		$this->date->minusMonths(5)->minusOneYear();
+		$this->assertEquals('1 year ago', $this->date->getRelativeDate());
+		$this->date->minusYears(10);
+		$this->assertEquals('11 years ago', $this->date->getRelativeDate());
 	}
 
 
 	public function testGetDateString()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('1991-01-31', $date->getDate());
+		$this->assertEquals('1991-01-31', $this->date->setTimestampFromString('31 January 1991')->getDate());
 	}
 
 
 	public function testGetDateTimeString()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('1991-01-31 00:00:00', $date->getDateTime());
+		$this->assertEquals('1991-01-31 00:00:00', $this->date->setTimestampFromString('31 January 1991')->getDateTime());
 	}
 
 
 	public function testGetShortDateString()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('Jan 31, 1991', $date->getShortDate());
+		$this->assertEquals('Jan 31, 1991', $this->date->setTimestampFromString('31 January 1991')->getShortDate());
 	}
 
 
 	public function testGetLongDateString()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('January 31st, 1991 at 12:00am', $date->getLongDate());
+		$this->assertEquals('January 31st, 1991 at 12:00am', $this->date->setTimestampFromString('31 January 1991')->getLongDate());
 	}
 
 
 	public function testGetTimeString()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('00:00:00', $date->getTime());
+		$this->assertEquals('00:00:00', $this->date->setTimestampFromString('31 January 1991')->getTime());
 	}
 
 
 	public function testGetDayOfWeek()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('Thursday', $date->getDayOfWeek());
+		$this->assertEquals('Thursday', $this->date->setTimestampFromString('31 January 1991')->getDayOfWeek());
 	}
 
 
 	public function testGetDayOfWeekAsNumeric()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals(4, $date->getDayOfWeekAsNumeric());
+		$this->assertEquals(4, $this->date->setTimestampFromString('31 January 1991')->getDayOfWeekAsNumeric());
 	}
 
 
 	public function testGetDaysInMonth()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals(31, $date->getDaysInMonth());
+		$this->assertEquals(31, $this->date->setTimestampFromString('31 January 1991')->getDaysInMonth());
 	}
 
 
 	public function testGetDayOfYear()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals(30, $date->getDayOfYear());
+		$this->assertEquals(30, $this->date->setTimestampFromString('31 January 1991')->getDayOfYear());
 	}
 
 
 	public function testGetDaySuffix()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('st', $date->getDaySuffix());
+		$this->assertEquals('st', $this->date->setTimestampFromString('31 January 1991')->getDaySuffix());
 	}
 
 
 	public function testIsLeapYear()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertFalse($date->isLeapYear());
+		$this->assertFalse($this->date->setTimestampFromString('31 January 1991')->isLeapYear());
 	}
 
 
 	public function testIsAmOrPm()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('AM', $date->isAmOrPm());
+		$this->assertEquals('AM', $this->date->setTimestampFromString('31 January 1991')->isAmOrPm());
 	}
 
 
 	public function testIsDaylightSavings()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertTrue($date->isDaylightSavings());
+		$this->assertTrue($this->date->setTimestampFromString('31 January 1991')->isDaylightSavings());
 	}
 
 
 	public function testGetGmtDifference()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('+1100', $date->getGmtDifference());
+		$this->assertEquals('+1100', $this->date->setTimestampFromString('31 January 1991')->getGmtDifference());
 	}
 
 
 	public function testSecondsSinceEpoch()
 	{
-		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals(strtotime('31 January 1991') - strtotime('January 1 1970 00:00:00 GMT'), $date->getSecondsSinceEpoch());
+		$this->date->setTimestampFromString('31 January 1991');
+		$this->assertEquals(strtotime('31 January 1991') - strtotime('January 1 1970 00:00:00 GMT'), $this->date->getSecondsSinceEpoch());
 	}
 
 
 	public function testGetTimezoneName()
 	{
 		$date = new ExpressiveDate('31 January 1991');
-		$this->assertEquals('Australia/Melbourne', $date->getTimezoneName());
+		$this->assertEquals('Australia/Melbourne', $this->date->setTimestampFromString('31 January 1991')->getTimezoneName());
 	}
 
 
 	public function testGetDefaultDateFormat()
 	{
-		$date = new ExpressiveDate('31 January 1991 16:00:00');
-		$this->assertEquals('31st January, 1991 at 4:00pm', $date->getDefaultDate());
+		$this->assertEquals('31st January, 1991 at 4:00pm', $this->date->setTimestampFromString('31 January 1991 16:00:00')->getDefaultDate());
 	}
 
 
 	public function testSetDefaultDateFormat()
 	{
-		$date = new ExpressiveDate('31 January 1991 16:00:00');
-		$date->setDefaultDateFormat('j F');
-		$this->assertEquals('31 January', $date->getDefaultDate());
+		$this->date->setDefaultDateFormat('j F');
+		$this->assertEquals('31 January',$this->date->setTimestampFromString('31 January 1991 16:00:00')->getDefaultDate());
 	}
 
 
 	public function testDefaultDateUsedOnObjectEcho()
 	{
-		$date = new ExpressiveDate('31 January 1991 16:00:00');
-		$this->assertEquals('31st January, 1991 at 4:00pm', $date);
+		$this->assertEquals('31st January, 1991 at 4:00pm', $this->date->setTimestampFromString('31 January 1991 16:00:00'));
 	}
 
 
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
 	public function testGettingInvalidDateAttributeThrowsException()
 	{
-		$this->setExpectedException('InvalidArgumentException');
-		$date = new ExpressiveDate;
-		$date->getInvalidDateAttribute();
+		$this->date->getInvalidDateAttribute();
 	}
 
 
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
 	public function testSettingInvalidDateAttributeThrowsException()
 	{
-		$this->setExpectedException('InvalidArgumentException');
-		$date = new ExpressiveDate;
-		$date->setInvalidDateAttribute('foo');
+		$this->date->setInvalidDateAttribute('foo');
 	}
 
 
 	public function testCompareDatesEqualTo()
 	{
-		$date = new ExpressiveDate;
-
-		$this->assertTrue($date->equalTo($date->copy()));
-		$this->assertFalse($date->sameAs($date->copy()->addOneDay()));
+		$this->assertTrue($this->date->equalTo($this->date->copy()));
+		$this->assertFalse($this->date->sameAs($this->date->copy()->addOneDay()));
 	}
 
 
 	public function testCompareDatesGreaterThan()
 	{
-		$date = new ExpressiveDate;
-
-		$this->assertTrue($date->greaterThan($date->copy()->minusOneDay()));
-		$this->assertFalse($date->greaterThan($date->copy()));
-		$this->assertFalse($date->greaterThan($date->copy()->addOneDay()));
+		$this->assertTrue($this->date->greaterThan($this->date->copy()->minusOneDay()));
+		$this->assertFalse($this->date->greaterThan($this->date->copy()));
+		$this->assertFalse($this->date->greaterThan($this->date->copy()->addOneDay()));
 	}
 
 
 	public function testCompareDatesLessThan()
 	{
-		$date = new ExpressiveDate;
-
-		$this->assertTrue($date->lessThan($date->copy()->addOneDay()));
-		$this->assertFalse($date->lessThan($date->copy()));
-		$this->assertFalse($date->lessThan($date->copy()->minusOneDay()));
+		$this->assertTrue($this->date->lessThan($this->date->copy()->addOneDay()));
+		$this->assertFalse($this->date->lessThan($this->date->copy()));
+		$this->assertFalse($this->date->lessThan($this->date->copy()->minusOneDay()));
 	}
 
 
 	public function testCompareDatesGreaterThanOrEqualTo()
 	{
-		$date = new ExpressiveDate;
-
-		$this->assertTrue($date->greaterOrEqualTo($date->copy()->minusOneDay()));
-		$this->assertTrue($date->greaterOrEqualTo($date->copy()));
-		$this->assertFalse($date->greaterOrEqualTo($date->copy()->addOneDay()));
+		$this->assertTrue($this->date->greaterOrEqualTo($this->date->copy()->minusOneDay()));
+		$this->assertTrue($this->date->greaterOrEqualTo($this->date->copy()));
+		$this->assertFalse($this->date->greaterOrEqualTo($this->date->copy()->addOneDay()));
 	}
 
 
 	public function testCompareDatesLessThanOrEqualTo()
 	{
-		$date = new ExpressiveDate;
-
-		$this->assertTrue($date->lessOrEqualTo($date->copy()->addOneDay()));
-		$this->assertTrue($date->lessOrEqualTo($date->copy()));
-		$this->assertFalse($date->lessOrEqualTo($date->copy()->minusOneDay()));
+		$this->assertTrue($this->date->lessOrEqualTo($this->date->copy()->addOneDay()));
+		$this->assertTrue($this->date->lessOrEqualTo($this->date->copy()));
+		$this->assertFalse($this->date->lessOrEqualTo($this->date->copy()->minusOneDay()));
 	}
 
 
 	public function testCopy()
 	{
-		$date = new ExpressiveDate('19 March 2013');
-
-		$this->assertEquals($date, $date->copy());
+		$this->assertEquals($this->date, $this->date->copy());
 	}
 
 	
