@@ -13,9 +13,6 @@
     "require": {
         "php": ">=5.2.0"
     },
-    "require-dev": {
-        "mockery/mockery": "0.7.*"
-    },
     "autoload": {
         "classmap": ["src"]
     },
