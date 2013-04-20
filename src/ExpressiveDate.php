@@ -250,7 +250,7 @@ class ExpressiveDate extends DateTime {
 	 */
 	public function endOfWeek()
 	{
-		$this->addDays(7 - $this->getDayOfWeekAsNumeric())->endOfDay();
+		$this->addDays(6 - $this->getDayOfWeekAsNumeric())->endOfDay();
 
 		return $this;
 	}

@@ -174,7 +174,7 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$date = new ExpressiveDate('18 March 2013');
 		$date->setWeekStartDay(1);
 
-		$this->assertEquals('2013/03/11', $date->copy()->setDay(17)->startOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/02/25', $date->copy()->setDay(1)->startOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/18', $date->copy()->setDay(18)->startOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/18', $date->copy()->setDay(19)->startOfWeek()->format('Y/m/d'));
 		$this->assertEquals('2013/03/18', $date->copy()->setDay(23)->startOfWeek()->format('Y/m/d'));
@@ -188,20 +188,17 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$date = new ExpressiveDate('17 March 2013');
 		$date->setWeekStartDay(0);
 
-		$this->assertEquals('2013/03/24', $date->copy()->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/24', $date->copy()->setDay(19)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/24', $date->copy()->setDay(23)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/31', $date->copy()->setDay(24)->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/23', $date->copy()->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/23', $date->copy()->setDay(19)->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/23', $date->copy()->setDay(23)->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/30', $date->copy()->setDay(24)->endOfWeek()->format('Y/m/d'));
 
 		$date = new ExpressiveDate('18 March 2013');
 		$date->setWeekStartDay(1);
 
-		$this->assertEquals('2013/03/18', $date->copy()->setDay(17)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/25', $date->copy()->setDay(18)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/25', $date->copy()->setDay(19)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/25', $date->copy()->setDay(23)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/03/25', $date->copy()->setDay(24)->endOfWeek()->format('Y/m/d'));
-		$this->assertEquals('2013/04/01', $date->copy()->setDay(25)->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/24', $date->copy()->setDay(18)->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/24', $date->copy()->setDay(24)->endOfWeek()->format('Y/m/d'));
+		$this->assertEquals('2013/03/31', $date->copy()->setDay(25)->endOfWeek()->format('Y/m/d'));
 	}
 
 
