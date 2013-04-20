@@ -31,6 +31,36 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testDateIsCreatedFromDate()
+	{
+		$date = ExpressiveDate::makeFromDate(2013, 1, 31);
+		$this->assertEquals('2013-01-31', $date->getDate());
+	}
+
+
+	public function testDateIsCreatedFromTime()
+	{
+		$date = ExpressiveDate::makeFromTime(20, null, null);
+		$this->assertEquals('20:00:00', $date->getTime());
+
+		$date = ExpressiveDate::makeFromTime(-12, null, 120);
+		$this->assertEquals('12:02:00', $date->getTime());
+
+		$date = ExpressiveDate::makeFromTime(12, 30, 125);
+		$this->assertEquals('12:32:05', $date->getTime());
+	}
+
+
+	public function testDateIsCreatedFromDateTime()
+	{
+		$date = ExpressiveDate::makeFromDateTime(2013, 1, 31, 8, null, null);
+		$this->assertEquals('2013-01-31 08:00:00', $date->getDateTime());
+
+		$date = ExpressiveDate::makeFromDateTime(2013, 1, 31, -12, null, null);
+		$this->assertEquals('2013-01-30 12:00:00', $date->getDateTime());
+	}
+
+
 	public function testDateIsCreatedWithDifferentTimezone()
 	{
 		$date = new ExpressiveDate(null, 'Europe/Paris');

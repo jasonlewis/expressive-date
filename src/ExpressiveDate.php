@@ -69,6 +69,72 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
+	 * Make and return a new ExpressiveDate instance with defined year, month, and day.
+	 * 
+	 * @param  int  $year
+	 * @param  int  $month
+	 * @param  int  $day
+	 * @param  string|DateTimeZone  $timezone
+	 * @return ExpressiveDate
+	 */
+	public static function makeFromDate($year = null, $month = null, $day = null, $timezone = null)
+	{
+		return static::makeFromDateTime($year, $month, $day, null, null, null, $timezone);
+	}
+
+	/**
+	 * Make and return a new ExpressiveDate instance with defined hour, minute, and second.
+	 * 
+	 * @param  int  $hour
+	 * @param  int  $minute
+	 * @param  int  $second
+	 * @param  string|DateTimeZone  $timezone
+	 * @return ExpressiveDate
+	 */
+	public static function makeFromTime($hour = null, $minute = null, $second = null, $timezone = null)
+	{
+		return static::makeFromDateTime(null, null, null, $hour, $minute, $second, $timezone);
+	}
+
+	/**
+	 * Make and return a new ExpressiveDate instance with defined year, month, day, hour, minute, and second.
+	 * 
+	 * @param  int  $year
+	 * @param  int  $month
+	 * @param  int  $day
+	 * @param  int  $hour
+	 * @param  int  $minute
+	 * @param  int  $second
+	 * @param  string|DateTimeZone  $timezone
+	 * @return ExpressiveDate
+	 */
+	public static function makeFromDateTime($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null)
+	{
+		$date = new static(null, $timezone);
+
+		$date->setDate($year ?: $date->getYear(), $month ?: $date->getMonth(), $day ?: $date->getDay());
+
+		// If no hour was given then we'll default the minute and second to the current
+		// minute and second. If a date was given and minute or second are null then
+		// we'll set them to 0, mimicking PHPs behaviour.
+		if (is_null($hour))
+		{
+			$minute = $minute ?: $date->getMinute();
+			$second = $second ?: $date->getSecond();
+		}
+		else
+		{
+			$minute = $minute ?: 0;
+			$second = $second ?: 0;
+		}
+
+		$date->setTime($hour ?: $date->getHour(), $minute, $second);
+
+		return $date;
+
+	}
+
+	/**
 	 * Parse a supplied timezone.
 	 *
 	 * @param  string|DateTimeZone  $timezone
