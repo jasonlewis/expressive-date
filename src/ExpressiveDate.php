@@ -1163,6 +1163,83 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
+	 * Alias for ExpressiveDate::equalTo()
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function sameAs(ExpressiveDate $date)
+	{
+		return $this->equalTo($date);
+	}
+
+	/**
+	 * Determine if date is equal to another Expressive Date instance.
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function equalTo(ExpressiveDate $date)
+	{
+		return $this == $date;
+	}
+
+	/**
+	 * Determine if date is not equal to another Expressive Date instance.
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function notEqualTo(ExpressiveDate $date)
+	{
+		return ! $this->equalTo($date);
+	}
+
+	/**
+	 * Determine if date is greater than another Expressive Date instance.
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function greaterThan(ExpressiveDate $date)
+	{
+		return $this > $date;
+	}
+
+	/**
+	 * Determine if date is less than another Expressive Date instance.
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function lessThan(ExpressiveDate $date)
+	{
+		return $this < $date;
+	}
+
+	/**
+	 * Determine if date is greater than or equal to another Expressive Date instance.
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function greaterOrEqualTo(ExpressiveDate $date)
+	{
+		return $this >= $date;
+	}
+
+	/**
+	 * Determine if date is less than or equal to another Expressive Date instance.
+	 * 
+	 * @param  ExpressiveDate  $date
+	 * @return bool
+	 */
+	public function lessOrEqualTo(ExpressiveDate $date)
+	{
+		return $this <= $date;
+	}
+
+	/**
 	 * Dynamically handle calls for date attributes and testers.
 	 *
 	 * @param  string  $method

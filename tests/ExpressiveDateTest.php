@@ -697,6 +697,55 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testCompareDatesEqualTo()
+	{
+		$date = new ExpressiveDate;
+
+		$this->assertTrue($date->equalTo($date->copy()));
+		$this->assertFalse($date->sameAs($date->copy()->addOneDay()));
+	}
+
+
+	public function testCompareDatesGreaterThan()
+	{
+		$date = new ExpressiveDate;
+
+		$this->assertTrue($date->greaterThan($date->copy()->minusOneDay()));
+		$this->assertFalse($date->greaterThan($date->copy()));
+		$this->assertFalse($date->greaterThan($date->copy()->addOneDay()));
+	}
+
+
+	public function testCompareDatesLessThan()
+	{
+		$date = new ExpressiveDate;
+
+		$this->assertTrue($date->lessThan($date->copy()->addOneDay()));
+		$this->assertFalse($date->lessThan($date->copy()));
+		$this->assertFalse($date->lessThan($date->copy()->minusOneDay()));
+	}
+
+
+	public function testCompareDatesGreaterThanOrEqualTo()
+	{
+		$date = new ExpressiveDate;
+
+		$this->assertTrue($date->greaterOrEqualTo($date->copy()->minusOneDay()));
+		$this->assertTrue($date->greaterOrEqualTo($date->copy()));
+		$this->assertFalse($date->greaterOrEqualTo($date->copy()->addOneDay()));
+	}
+
+
+	public function testCompareDatesLessThanOrEqualTo()
+	{
+		$date = new ExpressiveDate;
+
+		$this->assertTrue($date->lessOrEqualTo($date->copy()->addOneDay()));
+		$this->assertTrue($date->lessOrEqualTo($date->copy()));
+		$this->assertFalse($date->lessOrEqualTo($date->copy()->minusOneDay()));
+	}
+
+
 	public function testCopy()
 	{
 		$date = new ExpressiveDate('19 March 2013');
