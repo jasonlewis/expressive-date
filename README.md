@@ -14,11 +14,12 @@ A fluent extension to PHPs DateTime class.
     - <a href="#getting-instances">Getting Instances</a>
     - <a href="#quick-helpers">Quick Helpers</a>
     - <a href="#cloning">Cloning</a>
-    - <a href="#manipulating-the-date-and-time">Manipulating the Date and Time</a>
-    - <a href="#differences-in-date-and-time">Differences in Dates and Times</a>
-    - <a href="#working-with-dates-and-times">Working with Dates and Times</a>
-    - <a href="#formatting-dates-and-times">Formatting Dates and Times</a>
-    - <a href="#working-with-timezones">Working with Timezones</a>
+    - <a href="#manipulating-dates">Manipulating Dates</a>
+    - <a href="#differences-between-dates">Differences Between Dates</a>
+    - <a href="#comparing-dates">Comparing Dates</a>
+    - <a href="#interacting-with-dates">Interacting With Dates</a>
+    - <a href="#formatting-dates">Formatting Dates</a>
+    - <a href="#working-with-timezones">Working With Timezones</a>
 - <a href="#changelog">Changelog</a>
 - <a href="#license">License</a>
 
@@ -123,7 +124,7 @@ $clone = $date->clone();
 
 A clone is identical to the original instance and is useful when you need to compare or manipulate a date without affecting the original instance.
 
-### Manipulating the Date and Time
+### Manipulating Dates
 
 When working with dates you'll often want to manipulate it in a number of ways. Expressive Date eases this process with a simple and intuitive syntax.
 
@@ -217,7 +218,7 @@ $date->setTimestamp(time()); // Set the timestamp to the current time.
 $date->setTimestampFromString('31 January 1991'); // Set timestamp from a string.
 ~~~~
 
-### Differences in Dates and Times
+### Differences Between Dates
 
 Getting the difference between two dates is very easy with Expressive Date. Let's see how long it's been since my birthday, which was on the 31st January, 1991.
 
@@ -243,7 +244,7 @@ $date = new ExpressiveDate('January 31, 1991');
 $date->getDifferenceInYears(); // Will use the current date and time to get the difference.
 ~~~~
 
-### Comparing Dates and Times
+### Comparing Dates
 
 Being able to compare two dates is important in many applications. Expressive Date allows you to compare two `ExpressiveDate` instances against one another in a variety of ways.
 
@@ -261,7 +262,7 @@ $date->lessOrEqualTo($date->clone()->minusOneDay()); // false
 
 The methods themselves should be self explanatory. The `sameAs()` method is an alias of `equalTo()`.
 
-### Interacting with Dates and Times
+### Interacting With Dates
 
 Expressive Date provides a number of helpful methods for interacting with your dates and times.
 
@@ -288,7 +289,7 @@ $date->isWeekday(); // false
 $date->isWeekend(); // true
 ~~~~
 
-### Formatting Dates and Times
+### Formatting Dates
 
 It's now time to display your date and time to everyone. Expressive Date comes with a couple of predefined formatting methods for your convenience.
 
