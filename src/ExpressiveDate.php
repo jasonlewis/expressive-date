@@ -265,6 +265,11 @@ class ExpressiveDate extends DateTime {
 	 */
 	protected function modifyDays($amount, $invert = false)
 	{
+		if ($this->isFloat($amount))
+		{
+			return $this->modifyHours($amount * 24, $invert);
+		}
+
 		$interval = new DateInterval("P{$amount}D");
 
 		$this->modifyFromInterval($interval, $invert);
@@ -324,6 +329,11 @@ class ExpressiveDate extends DateTime {
 	 */
 	protected function modifyMonths($amount, $invert = false)
 	{
+		if ($this->isFloat($amount))
+		{
+			return $this->modifyWeeks($amount * 4, $invert);
+		}
+
 		$interval = new DateInterval("P{$amount}M");
 
 		$this->modifyFromInterval($interval, $invert);
@@ -383,6 +393,11 @@ class ExpressiveDate extends DateTime {
 	 */
 	protected function modifyYears($amount, $invert = false)
 	{
+		if ($this->isFloat($amount))
+		{
+			return $this->modifyMonths($amount * 12, $invert);
+		}
+
 		$interval = new DateInterval("P{$amount}Y");
 
 		$this->modifyFromInterval($interval, $invert);
@@ -442,6 +457,11 @@ class ExpressiveDate extends DateTime {
 	 */
 	protected function modifyHours($amount, $invert = false)
 	{
+		if ($this->isFloat($amount))
+		{
+			return $this->modifyMinutes($amount * 60, $invert);
+		}
+
 		$interval = new DateInterval("PT{$amount}H");
 
 		$this->modifyFromInterval($interval, $invert);
@@ -501,6 +521,11 @@ class ExpressiveDate extends DateTime {
 	 */
 	protected function modifyMinutes($amount, $invert = false)
 	{
+		if ($this->isFloat($amount))
+		{
+			return $this->modifySeconds($amount * 60, $invert);
+		}
+
 		$interval = new DateInterval("PT{$amount}M");
 
 		$this->modifyFromInterval($interval, $invert);
@@ -619,6 +644,11 @@ class ExpressiveDate extends DateTime {
 	 */
 	protected function modifyWeeks($amount, $invert = false)
 	{
+		if ($this->isFloat($amount))
+		{
+			return $this->modifyDays($amount * 7, $invert);
+		}
+
 		$interval = new DateInterval("P{$amount}W");
 
 		$this->modifyFromInterval($interval, $invert);
@@ -1108,6 +1138,17 @@ class ExpressiveDate extends DateTime {
 	public function __toString()
 	{
 		return $this->getDefaultDate();
+	}
+
+	/**
+	 * Determine if a given amount is a floating point number.
+	 * 
+	 * @param  int|float  $amount
+	 * @return bool
+	 */
+	protected function isFloat($amount)
+	{
+		return is_float($amount) and intval($amount) != $amount;
 	}
 
 	/**

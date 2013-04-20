@@ -315,6 +315,106 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testAddingDayFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->addDays(0.5);
+		$this->assertEquals(strtotime('+12 hours'), $date->getTimestamp());
+		$date->addDays(0.25);
+		$this->assertEquals(strtotime('+18 hours'), $date->getTimestamp());
+	}
+
+
+	public function testSubtractingDayFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->minusDays(0.5);
+		$this->assertEquals(strtotime('-12 hours'), $date->getTimestamp());
+		$date->minusDays(0.25);
+		$this->assertEquals(strtotime('-18 hours'), $date->getTimestamp());
+	}
+
+
+	public function testAddingMonthFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->addMonths(0.25);
+		$this->assertEquals(strtotime('+7 days'), $date->getTimestamp());
+		$date->addMonths(1.5);
+		$this->assertEquals(strtotime('+7 weeks'), $date->getTimestamp());
+	}
+
+
+	public function testSubtractingMonthFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->minusMonths(0.25);
+		$this->assertEquals(strtotime('-7 days'), $date->getTimestamp());
+		$date->minusMonths(1.5);
+		$this->assertEquals(strtotime('-7 weeks'), $date->getTimestamp());
+	}
+
+
+	public function testAddingYearFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->addYears(0.25);
+		$this->assertEquals(strtotime('+3 months'), $date->getTimestamp());
+		$date->addYears(1.75);
+		$this->assertEquals(strtotime('+24 months'), $date->getTimestamp());
+	}
+
+
+	public function testSubtractingYearFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->minusYears(0.25);
+		$this->assertEquals(strtotime('-3 months'), $date->getTimestamp());
+		$date->minusYears(1.75);
+		$this->assertEquals(strtotime('-24 months'), $date->getTimestamp());
+	}
+
+
+	public function testAddingHourFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->addHours(0.5);
+		$this->assertEquals(strtotime('+30 minutes'), $date->getTimestamp());
+		$date->addHours(2.25);
+		$this->assertEquals(strtotime('+165 minutes'), $date->getTimestamp());
+	}
+
+
+	public function testSubtractingHourFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->minusHours(0.5);
+		$this->assertEquals(strtotime('-30 minutes'), $date->getTimestamp());
+		$date->minusHours(1.75);
+		$this->assertEquals(strtotime('-135 minutes'), $date->getTimestamp());
+	}
+
+
+	public function testAddingMinuteFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->addMinutes(0.9);
+		$this->assertEquals(strtotime('+54 seconds'), $date->getTimestamp());
+		$date->addMinutes(0.2);
+		$this->assertEquals(strtotime('+66 seconds'), $date->getTimestamp());
+	}
+
+
+	public function testSubtractingMinuteFractions()
+	{
+		$date = new ExpressiveDate;
+		$date->minusMinutes(0.4);
+		$this->assertEquals(strtotime('-24 seconds'), $date->getTimestamp());
+		$date->minusMinutes(0.7);
+		$this->assertEquals(strtotime('-66 seconds'), $date->getTimestamp());
+	}
+
+
 	public function testSettingTimezoneDuringRuntime()
 	{
 		$date = new ExpressiveDate;
