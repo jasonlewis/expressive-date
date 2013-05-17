@@ -64,6 +64,7 @@ Before you can begin working with dates you'll need to get an instance of `Expre
 
 ```php
 // Instantiate a new instance of Expressive Date.
+// This will create an instance and use the current date and time
 $date = new ExpressiveDate;
 
 // Use the static make method to get an instance of Expressive Date.
@@ -99,7 +100,7 @@ If you use `null` as any of the parameters then Expressive Date will use the cur
 There are a couple of quick helper methods available to you when using Expressive Date.
 
 ```php
-$date = new ExpressiveDate;
+$date = new ExpressiveDate; // Creates an instance that uses current date and time
 
 $date->today(); // Sets to todays date, e.g., 1991-01-31 00:00:00
 
