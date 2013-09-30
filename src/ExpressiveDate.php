@@ -900,16 +900,17 @@ class ExpressiveDate extends DateTime {
 	 * Get a relative date string, e.g., 3 days ago.
 	 *
 	 * @param  ExpressiveDate  $compare
+	 * @param  boolean $isPrefix
 	 * @return string
 	 */
-	public function getRelativeDate($compare = null)
+	public function getRelativeDate($compare = null, $isPrefix = false)
 	{
 		if ( ! $compare)
 		{
 			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
-		$units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year');
+		$units = array($this->trans('second'), $this->trans('minute'), $this->trans('hour'), $this->trans('day'), $this->trans('week'), $this->trans('month'), $this->trans('year'));
 		$values = array(60, 60, 24, 7, 4.35, 12);
 
 		// Get the difference between the two timestamps. We'll use this to cacluate the
@@ -926,11 +927,11 @@ class ExpressiveDate extends DateTime {
 
 		if ($compare->getTimestamp() < $this->getTimestamp())
 		{
-			$suffix = 'from now';
+			$suffix = $this->trans('from now');
 		}
 		else
 		{
-			$suffix = 'ago';
+			$suffix = $this->trans('ago');
 		}
 
 		// Get the unit of time we are measuring. We'll then check the difference, if it is not equal
@@ -941,8 +942,13 @@ class ExpressiveDate extends DateTime {
 		{
 			$unit .= 's';
 		}
+		
+		// Formate result string
+		$format = array($difference, $unit);
+		$function = $isPrefix ? 'array_unshift' : 'array_push';
+		$function($format, $suffix);
 
-		return $difference.' '.$unit.' '.$suffix;
+		return implode(' ', $format);
 	}
 
 	/**
@@ -1303,5 +1309,19 @@ class ExpressiveDate extends DateTime {
 	{
 		return clone $this;
 	}
-
+	
+	/**
+	 * Apply translator lavarel if exist
+	 * 
+	 * @param  string $str
+	 * @return string
+	 */
+	protected function trans($str)
+	{
+		if (function_exists('trans'))
+		{
+			return trans($str);
+		}
+		return $str;
+	}
 }
