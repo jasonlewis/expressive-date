@@ -643,5 +643,19 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->date, $this->date->copy());
 	}
 
-	
+    // PHP 5.3 does not accept NULL as timezone in the DATETIME constructor
+    public function testDateTimeConstructorUsingNullAsTimezoneShouldSucceed()
+    {
+        if (PHP_VERSION_ID >= 50300 && PHP_VERSION_ID < 50400) {
+            $this->assertNotEmpty( $this->date->__construct( 'now', null ) );
+        }
+        else {
+            $this->markTestSkipped( "Test (testDateTimeConstructorUsingNullAsTimezoneShouldSucceed) is only relevant in PHP 5.3.x" );
+        }
+    }
+
+    public function testInLaravelWithoutLaravelShouldReturnFalse()
+    {
+        $this->assertFalse($this->date->inLaravel());
+    }
 }
