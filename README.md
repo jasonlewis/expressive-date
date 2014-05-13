@@ -2,7 +2,7 @@
 
 A fluent extension to PHPs DateTime class.
 
-[![Build Status](https://travis-ci.org/jasonlewis/expressive-date.png?branch=master)](https://travis-ci.org/jasonlewis/expressive-date)
+[![Build Status](https://travis-ci.org/denvers/expressive-date.png?branch=master)](https://travis-ci.org/denvers/expressive-date)
 
 ## Table of Contents
 
@@ -367,9 +367,9 @@ $date = new ExpressiveDate;
 $timezone = $date->getTimezoneName(); // Australia/Melbourne
 ```
 
-### Working with Timezones
+### Working with Localization
 
-When using this package in Laravel you have the ability to use Laravel's Localisation support. Add a file "expressivedate.php" in your app/lang/{code}/ folder. Currently the following language strings are required:
+When using this package in Laravel you have the ability to use [Laravel's Localization support](http://laravel.com/docs/localization). Add a file ```expressivedate.php``` in your ```app/lang/{code}/``` folder. Currently the following language strings are required:
 
 ```php
 <?php

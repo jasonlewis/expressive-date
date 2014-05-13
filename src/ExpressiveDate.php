@@ -951,7 +951,7 @@ class ExpressiveDate extends DateTime {
             $unit .= 's';
         }
 
-        // If we are in Laravel mode, we can use their Localisation system to add language support.
+        // If we are in Laravel mode, we can use their Localization system to add language support.
         if ( $this->inLaravel() )
         {
             $units = array(
