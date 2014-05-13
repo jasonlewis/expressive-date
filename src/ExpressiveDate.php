@@ -51,9 +51,15 @@ class ExpressiveDate extends DateTime {
      */
     public function __construct($time = null, $timezone = null)
     {
-        $timezone = $this->parseSuppliedTimezone($timezone);
-
-        parent::__construct($time, $timezone);
+        if ( is_null($timezone) )
+        {
+            parent::__construct($time); // For PHP5.3 compatibility
+        }
+        else
+        {
+            $timezone = $this->parseSuppliedTimezone($timezone);
+            parent::__construct($time, $timezone);
+        }
     }
 
     /**
