@@ -51,9 +51,15 @@ class ExpressiveDate extends DateTime {
 	 */
 	public function __construct($time = null, $timezone = null)
 	{
-		$timezone = $this->parseSuppliedTimezone($timezone);
-
-		parent::__construct($time, $timezone);
+		if ( is_null($timezone) )
+		{
+			parent::__construct($time); // For PHP5.3 compatibility
+		}
+		else
+		{
+			$timezone = $this->parseSuppliedTimezone($timezone);
+			parent::__construct($time, $timezone);
+		}
 	}
 
 	/**
@@ -70,7 +76,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Make and return a new ExpressiveDate instance with defined year, month, and day.
-	 * 
+	 *
 	 * @param  int  $year
 	 * @param  int  $month
 	 * @param  int  $day
@@ -84,7 +90,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Make and return a new ExpressiveDate instance with defined hour, minute, and second.
-	 * 
+	 *
 	 * @param  int  $hour
 	 * @param  int  $minute
 	 * @param  int  $second
@@ -98,7 +104,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Make and return a new ExpressiveDate instance with defined year, month, day, hour, minute, and second.
-	 * 
+	 *
 	 * @param  int  $year
 	 * @param  int  $month
 	 * @param  int  $day
@@ -909,7 +915,6 @@ class ExpressiveDate extends DateTime {
 			$compare = new ExpressiveDate(null, $this->getTimezone());
 		}
 
-		$units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year');
 		$values = array(60, 60, 24, 7, 4.35, 12);
 
 		// Get the difference between the two timestamps. We'll use this to cacluate the
@@ -926,20 +931,46 @@ class ExpressiveDate extends DateTime {
 
 		if ($compare->getTimestamp() < $this->getTimestamp())
 		{
-			$suffix = 'from now';
+			$suffix = $this->inLaravel() ? Lang::get('expressivedate.from_now') : 'from now';
 		}
 		else
 		{
-			$suffix = 'ago';
+			$suffix = $this->inLaravel() ? Lang::get('expressivedate.ago') : 'ago';
 		}
 
 		// Get the unit of time we are measuring. We'll then check the difference, if it is not equal
-		// to exactly 1 then it's a multiple of the given unit so we'll append an 's'.
+		// to exactly 1 then it's a multiple of the given unit so use the plural variation instead of the singular.
+		$units = array(
+			'second',
+			'minute',
+			'hour',
+			'day',
+			'week',
+			'month',
+			'year',
+		);
+
 		$unit = $units[$i];
 
 		if ($difference != 1)
 		{
 			$unit .= 's';
+		}
+
+		// If we are in Laravel mode, we can use their Localization system to add language support.
+		if ( $this->inLaravel() )
+		{
+			$units = array(
+				( $difference != 1 ) ? Lang::get('expressivedate.second_plural')    : Lang::get('expressivedate.second_singular'),
+				( $difference != 1 ) ? Lang::get('expressivedate.minute_plural')    : Lang::get('expressivedate.minute_singular'),
+				( $difference != 1 ) ? Lang::get('expressivedate.hour_plural')      : Lang::get('expressivedate.hour_singular'),
+				( $difference != 1 ) ? Lang::get('expressivedate.day_plural')       : Lang::get('expressivedate.day_singular'),
+				( $difference != 1 ) ? Lang::get('expressivedate.week_plural')      : Lang::get('expressivedate.week_singular'),
+				( $difference != 1 ) ? Lang::get('expressivedate.month_plural')     : Lang::get('expressivedate.month_singular'),
+				( $difference != 1 ) ? Lang::get('expressivedate.year_plural')      : Lang::get('expressivedate.year_singular'),
+			);
+
+			$unit = $units[$i];
 		}
 
 		return $difference.' '.$unit.' '.$suffix;
@@ -1049,6 +1080,16 @@ class ExpressiveDate extends DateTime {
 	}
 
 	/**
+	 * Detects if we are currently in Laravel mode
+	 *
+	 * @return bool
+	 */
+	public function inLaravel()
+	{
+		return class_exists("App") && class_exists("Lang");
+	}
+
+	/**
 	 * Get a date attribute.
 	 *
 	 * @param  string  $attribute
@@ -1107,7 +1148,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Syntactical sugar for determining if date object "is" a condition.
-	 * 
+	 *
 	 * @param  string  $attribute
 	 * @return mixed
 	 */
@@ -1164,7 +1205,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Alias for ExpressiveDate::equalTo()
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1175,7 +1216,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if date is equal to another Expressive Date instance.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1186,7 +1227,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if date is not equal to another Expressive Date instance.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1197,7 +1238,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if date is greater than another Expressive Date instance.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1208,7 +1249,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if date is less than another Expressive Date instance.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1219,7 +1260,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if date is greater than or equal to another Expressive Date instance.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1230,7 +1271,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if date is less than or equal to another Expressive Date instance.
-	 * 
+	 *
 	 * @param  ExpressiveDate  $date
 	 * @return bool
 	 */
@@ -1285,7 +1326,7 @@ class ExpressiveDate extends DateTime {
 
 	/**
 	 * Determine if a given amount is a floating point number.
-	 * 
+	 *
 	 * @param  int|float  $amount
 	 * @return bool
 	 */
