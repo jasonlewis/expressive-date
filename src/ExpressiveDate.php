@@ -1078,7 +1078,7 @@ class ExpressiveDate extends DateTime {
      *
      * @return bool
      */
-    protected function inLaravel()
+    public function inLaravel()
     {
         return class_exists("App") && class_exists("Lang");
     }

@@ -643,5 +643,8 @@ class DateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->date, $this->date->copy());
 	}
 
-	
+    public function testInLaravelWithoutLaravelShouldReturnFalse()
+    {
+        $this->assertFalse($this->date->inLaravel());
+    }
 }
