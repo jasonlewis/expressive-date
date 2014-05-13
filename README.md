@@ -366,6 +366,32 @@ $date = new ExpressiveDate;
 
 $timezone = $date->getTimezoneName(); // Australia/Melbourne
 ```
+### Working with Laravel Localization
+
+When using this package in Laravel you have the ability to use [Laravel's Localization support](http://laravel.com/docs/localization). Add a file ```expressivedate.php``` in your ```app/lang/{code}/``` folder. Currently the following language strings are required:
+
+```php
+<?php
+// Dutch languagefile
+return array(
+    "second_singular" => "seconde",
+    "second_plural"   => "seconden",
+    "minute_singular" => "minuut",
+    "minute_plural"   => "minuten",
+    "hour_singular"   => "uur",
+    "hour_plural"     => "uur",
+    "day_singular"    => "dag",
+    "day_plural"      => "dagen",
+    "week_singular"   => "week",
+    "week_plural"     => "weken",
+    "month_singular"  => "maand",
+    "month_plural"    => "maanden",
+    "year_singular"   => "jaar",
+    "year_plural"     => "jaren",
+    "ago"             => "geleden",
+    "from_now"        => "in de toekomst"
+);
+```
 
 ## Changelog
 

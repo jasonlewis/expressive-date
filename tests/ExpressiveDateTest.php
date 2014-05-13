@@ -653,4 +653,9 @@ class DateTest extends PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "Test (testDateTimeConstructorUsingNullAsTimezoneShouldSucceed) is only relevant in PHP 5.3.x" );
 		}
 	}
+
+	public function testInLaravelWithoutLaravelShouldReturnFalse()
+	{
+		$this->assertFalse($this->date->inLaravel());
+	}
 }
