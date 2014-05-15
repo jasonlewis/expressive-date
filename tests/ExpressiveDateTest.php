@@ -647,7 +647,7 @@ class DateTest extends PHPUnit_Framework_TestCase {
 	public function testDateTimeConstructorUsingNullAsTimezoneShouldSucceed()
 	{
 		if (PHP_VERSION_ID >= 50300 && PHP_VERSION_ID < 50400) {
-			$this->assertNotEmpty( $this->date->__construct( 'now', null ) );
+			$this->assertNotEmpty( $this->date->__construct( 'now', null ), "Tested using PHP: ".PHP_VERSION_ID );
 		}
 		else {
 			$this->markTestSkipped( "Test (testDateTimeConstructorUsingNullAsTimezoneShouldSucceed) is only relevant in PHP 5.3.x" );
