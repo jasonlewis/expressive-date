@@ -113,12 +113,12 @@ These helpers also set the time to midnight.
 
 ### Cloning
 
-You can clone an instance of `ExpressiveDate` with the `clone()` method.
+You can clone an instance of `ExpressiveDate` with the `copy()` method.
 
 ```php
 $date = new ExpressiveDate;
 
-$clone = $date->clone();
+$clone = $date->copy();
 ```
 
 A clone is identical to the original instance and is useful when you need to compare or manipulate a date without affecting the original instance.
@@ -250,13 +250,13 @@ Being able to compare two dates is important in many applications. Expressive Da
 ```php
 $date = new ExpressiveDate;
 
-$date->equalTo($date->clone()); // true
-$date->sameAs($date->clone()->minusOneDay()); // false
-$date->notEqualTo($date->clone()); // false
-$date->greaterThan($date->clone()->minusOneDay()); // true
-$date->lessThan($date->clone()->addOneDay()); // true
-$date->greaterOrEqualTo($date->clone()); // true
-$date->lessOrEqualTo($date->clone()->minusOneDay()); // false
+$date->equalTo($date->copy()); // true
+$date->sameAs($date->copy()->minusOneDay()); // false
+$date->notEqualTo($date->copy()); // false
+$date->greaterThan($date->copy()->minusOneDay()); // true
+$date->lessThan($date->copy()->addOneDay()); // true
+$date->greaterOrEqualTo($date->copy()); // true
+$date->lessOrEqualTo($date->copy()->minusOneDay()); // false
 ```
 
 The methods themselves should be self explanatory. The `sameAs()` method is an alias of `equalTo()`.
