@@ -206,6 +206,30 @@ class ExpressiveDate extends DateTime {
 
 		return $this;
 	}
+	
+	/**
+	* Use the start of the time
+	* 
+	* @return ExpressiveDate
+	*/
+	public function startOfTime()
+	{
+		$this->setMinute(0)
+		    ->setSecond(0);
+		return $this;
+	}
+	
+	/**
+	 * Use the end of the day.
+	 *
+	 * @return ExpressiveDate
+	 */
+	public function endOfTime()
+	{
+		$this->setMinute(59)->setSecond(59);
+
+		return $this;
+	}
 
 	/**
 	 * Use the start of the day.
